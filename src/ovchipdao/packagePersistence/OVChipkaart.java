@@ -1,8 +1,7 @@
-package ovchipdao;
+package ovchipdao.packagePersistence;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import ovchipdao.packageDomain.Reiziger;
+
 import java.sql.Date;
 
 public class OVChipkaart {

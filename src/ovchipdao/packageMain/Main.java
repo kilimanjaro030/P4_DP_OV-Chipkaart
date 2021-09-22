@@ -1,12 +1,13 @@
-package ovchipdao;
+package ovchipdao.packageMain;
+
+import ovchipdao.packagePersistence.*;
+import ovchipdao.packageDomain.Adres;
+import ovchipdao.packageDomain.Reiziger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
-import java.sql.Date;
 
 public class Main {
     private static Connection connection;
@@ -113,10 +114,10 @@ public class Main {
         Reiziger mehmet = new Reiziger(79, "M.A", "", "Bayram", java.sql.Date.valueOf(mehmetBD));
         rdao.save(mehmet);
         System.out.println("Eerst " + adressen.size() + " adressen, na adao.save() ");
-        Adres Padualaan = new Adres(12,"3535SB","31","Padualaan","Utrecht");
+        Adres padualaan = new Adres(12,"3535SB","31","Padualaan","Utrecht");
 
-        Padualaan.setReiziger(mehmet);
-        adao.save(Padualaan);
+        padualaan.setReiziger(mehmet);
+        adao.save(padualaan);
         adressen = adao.findAll();
         System.out.println(adressen.size() + " adressen.\n");
 
@@ -127,8 +128,8 @@ public class Main {
         for(Adres adres : adressen){
             System.out.println(adres);
         }
-        Padualaan = new Adres(12, "3535SB", "69", "Padualaan", "Utrecht");
-        adao.update(Padualaan);
+        padualaan = new Adres(12, "3535SB", "69", "Padualaan", "Utrecht");
+        adao.update(padualaan);
         System.out.println();
         System.out.println("Padualaan na update:");
 
@@ -143,14 +144,14 @@ public class Main {
         System.out.println("\n---------- FindByReiziger -------------");
         System.out.println();
         String hansBD = "1945-08-01";
-        Reiziger Hans = new Reiziger(5,"H.","","Klaasen",java.sql.Date.valueOf(hansBD));
+        Reiziger hans = new Reiziger(5,"H.","","Klaasen",java.sql.Date.valueOf(hansBD));
         Adres add = adao.findByReiziger(Hans);
         System.out.println(add);
 
         System.out.println("\n---------- delete adres -------------");
         adressen = adao.findAll();
         System.out.println("Aantal adressen voor delete = " + adressen.size());
-        adao.delete(Padualaan);
+        adao.delete(padualaan);
         adressen = adao.findAll();
         System.out.println("Aantal adressen na delete = " + adressen.size());
 

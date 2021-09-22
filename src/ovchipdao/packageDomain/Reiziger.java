@@ -1,4 +1,6 @@
-package ovchipdao;
+package ovchipdao.packageDomain;
+
+import ovchipdao.packagePersistence.OVChipkaart;
 
 import java.sql.Date;
 import java.util.ArrayList;

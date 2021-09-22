@@ -1,4 +1,4 @@
-package ovchipdao;
+package ovchipdao.packageDomain;
 
 public class Adres {
 

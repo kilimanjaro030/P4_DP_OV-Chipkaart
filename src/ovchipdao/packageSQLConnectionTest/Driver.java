@@ -1,4 +1,4 @@
-package ovchipdao;
+package ovchipdao.packageSQLConnectionTest;
 
 import java.sql.*;
 

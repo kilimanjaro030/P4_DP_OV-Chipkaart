@@ -1,4 +1,6 @@
-package ovchipdao;
+package ovchipdao.packagePersistence;
+
+import ovchipdao.packageDomain.Reiziger;
 
 import java.util.List;
 

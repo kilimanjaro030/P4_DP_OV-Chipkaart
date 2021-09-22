@@ -1,9 +1,11 @@
-package ovchipdao;
+package ovchipdao.packagePersistence;
+
+import ovchipdao.packageDomain.Adres;
+import ovchipdao.packageDomain.Reiziger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Date;
 
 
 public class AdresDAOPsql implements AdresDAO {

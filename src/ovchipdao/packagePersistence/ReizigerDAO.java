@@ -1,9 +1,7 @@
-package ovchipdao;
+package ovchipdao.packagePersistence;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import ovchipdao.packageDomain.Reiziger;
+
 import java.util.List;
 
 public interface ReizigerDAO {

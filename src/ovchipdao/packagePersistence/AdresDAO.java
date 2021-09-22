@@ -1,4 +1,7 @@
-package ovchipdao;
+package ovchipdao.packagePersistence;
+
+import ovchipdao.packageDomain.Adres;
+import ovchipdao.packageDomain.Reiziger;
 
 import java.util.List;
 
