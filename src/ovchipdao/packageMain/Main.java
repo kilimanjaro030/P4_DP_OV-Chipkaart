@@ -145,7 +145,7 @@ public class Main {
         System.out.println();
         String hansBD = "1945-08-01";
         Reiziger hans = new Reiziger(5,"H.","","Klaasen",java.sql.Date.valueOf(hansBD));
-        Adres add = adao.findByReiziger(Hans);
+        Adres add = adao.findByReiziger(hans);
         System.out.println(add);
 
         System.out.println("\n---------- delete adres -------------");
