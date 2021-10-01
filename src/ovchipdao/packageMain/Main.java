@@ -1,5 +1,7 @@
 package ovchipdao.packageMain;
 
+import ovchipdao.packageDomain.OVChipkaart;
+import ovchipdao.packageDomain.Product;
 import ovchipdao.packagePersistence.*;
 import ovchipdao.packageDomain.Adres;
 import ovchipdao.packageDomain.Reiziger;
@@ -7,6 +9,7 @@ import ovchipdao.packageDomain.Reiziger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.util.List;
 
 public class Main {
@@ -20,6 +23,8 @@ public class Main {
         testAdresDAO(adao,rdao);
         OVChipkaartDAO odao = new OVChipkaartDAOPsql(getConnection(connection));
         testOVChipkaartDAO(odao,rdao);
+        ProductDAO pdao = new ProductDAOPsql(getConnection(connection));
+        testProductDAO(pdao,odao);
     }
 
     private static Connection getConnection(Connection connection) throws SQLException{
@@ -228,5 +233,100 @@ public class Main {
 
         rdao.delete(mehmet);
 
+    }
+
+    private static void testProductDAO(ProductDAO pdao, OVChipkaartDAO odao) {
+        pdao.setOdao(odao);
+
+        System.out.println("\n---------- ALle producten ophalen van de database met findAll -------------");
+        System.out.println();
+        List<Product> producten = pdao.findAll();
+
+        for(Product product : producten){
+            System.out.println(product);
+        }
+
+        System.out.println();
+
+        System.out.println("\n---------- Product toevoegen in de database -------------");
+        System.out.println();
+
+        producten = pdao.findAll();
+        System.out.print("Aantal producten in de database voor het creeren van een product: " + producten.size());
+        Product product = new Product(10, "StudentenOV","OV product voor studenten",00.00);
+
+        OVChipkaart ovChipkaart = odao.findByid(79625);
+        OVChipkaart ovChipkaart1 = odao.findByid(90537);
+
+        product.AddOVChipkaart(ovChipkaart);
+        product.AddOVChipkaart(ovChipkaart1);
+
+        pdao.save(product);
+
+        producten = pdao.findAll();
+        System.out.println(producten.size() + " Producten\n");
+
+        System.out.println();
+
+        System.out.println("\n---------- Product aanpassen in de database -------------");
+        System.out.println();
+
+        System.out.println("Product voordat de aanpassing zich plaatsvond:");
+        Product productnr10 = pdao.findById(10);
+        System.out.println(productnr10);
+
+        System.out.println();
+
+        Product newProductnr10 = new Product(10,"StudentenOV","Nieuwe wettelijke regeling StudentenOV is vanaf nu per jaar 10 euro",10.00);
+        pdao.update(newProductnr10);
+
+        System.out.println("Product na de aanpassingen: ");
+        newProductnr10 = pdao.findById(10);
+        System.out.println(newProductnr10);
+
+        System.out.println();
+
+        System.out.println("\n---------- Product verwijderen van de database -------------");
+        System.out.println();
+
+        producten = pdao.findAll();
+
+        System.out.println("Aantal producten in de database voor het verwijderen van een product: " + producten.size());
+
+        product.DeleteOVChipkaart(ovChipkaart);
+        product.DeleteOVChipkaart(ovChipkaart);
+        pdao.delete(product);
+
+
+        producten = pdao.findAll();
+        System.out.println(producten.size() + " OVChipkaarten\n");
+
+        System.out.println();
+
+        System.out.println("\n---------- selecteer producten die bij een ovchipkaart horen. -------------");
+        System.out.println();
+        System.out.println("functie findbyovchipkaart geeft de volgende product: ");
+
+        OVChipkaart oneOVChipkaart = odao.findByid(90537);
+        System.out.println(oneOVChipkaart);
+        List<Product> products = pdao.findByOVChipkaart(oneOVChipkaart);
+
+        for (Product p : products){
+            System.out.println(p);
+        }
+        System.out.println();
+
+        System.out.println("\n---------- selecteer ovchipkaarten met een product -------------");
+        System.out.println();
+
+        System.out.println("functie findbyproduct geeft de volgende product: ");
+
+        Product oneProduct = pdao.findById(3);
+        List<OVChipkaart> ovChipkaarten = odao.findByProduct(oneProduct);
+
+        for(OVChipkaart ov : ovChipkaarten){
+            System.out.println(ov);
+        }
+        System.out.println();
     }
 }

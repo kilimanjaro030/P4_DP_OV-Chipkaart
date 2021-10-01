@@ -1,21 +1,31 @@
-package ovchipdao.packagePersistence;
-
-import ovchipdao.packageDomain.Reiziger;
+package ovchipdao.packageDomain;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OVChipkaart {
     private int kaart_nummer;
     private java.sql.Date geldig_tot;
     private int klasse;
-    private int saldo;
+    private double saldo;
     private Reiziger reiziger;
+    private Product product;
+    private List<Product> producten = new ArrayList<>();
 
-    public OVChipkaart(int kaart_nummer, java.sql.Date geldig_tot, int klasse, int saldo) {
+    public OVChipkaart(int kaart_nummer, java.sql.Date geldig_tot, int klasse, double saldo) {
         this.kaart_nummer = kaart_nummer;
         this.geldig_tot = geldig_tot;
         this.klasse = klasse;
         this.saldo = saldo;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public List<Product> getProducten() {
+        return producten;
     }
 
     public Reiziger getReiziger() {
@@ -50,11 +60,11 @@ public class OVChipkaart {
         this.klasse = klasse;
     }
 
-    public int getSaldo() {
+    public double getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(int saldo) {
+    public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
 

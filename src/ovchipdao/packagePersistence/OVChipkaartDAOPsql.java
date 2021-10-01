@@ -1,5 +1,7 @@
 package ovchipdao.packagePersistence;
 
+import ovchipdao.packageDomain.OVChipkaart;
+import ovchipdao.packageDomain.Product;
 import ovchipdao.packageDomain.Reiziger;
 
 import java.sql.*;
@@ -34,7 +36,7 @@ public class OVChipkaartDAOPsql implements OVChipkaartDAO {
             pt.setInt(1,ovchipkaart.getKaart_nummer());
             pt.setDate(2, ovchipkaart.getGeldig_tot());
             pt.setInt(3, ovchipkaart.getKlasse());
-            pt.setInt(4, ovchipkaart.getSaldo());
+            pt.setDouble(4, ovchipkaart.getSaldo());
             pt.setInt(5, ovchipkaart.getReiziger().getId());
             pt.executeUpdate();
             result = true;
@@ -50,7 +52,7 @@ public class OVChipkaartDAOPsql implements OVChipkaartDAO {
 
             pt.setDate(1, ovchipkaart.getGeldig_tot());
             pt.setInt(2, ovchipkaart.getKlasse());
-            pt.setInt(3, ovchipkaart.getSaldo());
+            pt.setDouble(3, ovchipkaart.getSaldo());
 
             pt.executeUpdate();
             result = true;
@@ -81,7 +83,7 @@ public class OVChipkaartDAOPsql implements OVChipkaartDAO {
                     int kaart_nummer = rs.getInt("kaart_nummer");
                     Date geldig_tot = rs.getDate("geldig_tot");
                     int klasse = rs.getInt("klasse");
-                    int saldo = rs.getInt("saldo");
+                    double saldo = rs.getDouble("saldo");
                     lijst_ovchipkaarten.add(new OVChipkaart(kaart_nummer,geldig_tot,klasse,saldo));
                 }
             } catch (SQLException e) {
@@ -99,7 +101,7 @@ public class OVChipkaartDAOPsql implements OVChipkaartDAO {
                 int kaart_nummer = result.getInt(1);
                 Date geldig_tot = result.getDate(2);
                 int klasse = result.getInt(3);
-                int saldo = result.getInt(4);
+                double saldo = result.getDouble(4);
                 int reiziger_id = result.getInt(5);
 
                 OVChipkaart ovChipkaart =  new OVChipkaart (kaart_nummer,geldig_tot,klasse,saldo);
@@ -111,5 +113,55 @@ public class OVChipkaartDAOPsql implements OVChipkaartDAO {
             sql.printStackTrace();
         }
         return results;
+    }
+    public OVChipkaart findByid(int id){
+        OVChipkaart result = null;
+
+        String query = "SELECT kaart_nummer, geldig_tot, klasse, saldo FROM ov_chipkaart WHERE kaart_nummer = ?";
+
+        try{
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1,id);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int kaart_nummer = rs.getInt("kaart_nummer");
+                java.sql.Date geldig_tot = rs.getDate("geldig_tot");
+                int klasse = rs.getInt("klasse");
+                double saldo = rs.getDouble("saldo");
+
+                result = new OVChipkaart(kaart_nummer,geldig_tot,klasse,saldo);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public List<OVChipkaart> findByProduct(Product product){
+        List<OVChipkaart> ovchipkaarten = product.getOvchipkaarten();
+
+        String query = "SELECT * FROM ov_chipkaart ov JOIN ov_chipkaart_product ovp ON ovp.kaart_nummer = ov.kaart_nummer WHERE ovp.product_nummer = ?";
+
+        try{
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, product.getProduct_nummer());
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int kaart_nummer = rs.getInt("kaart_nummer");
+                java.sql.Date geldig_tot = rs.getDate("geldig_tot");
+                int klasse = rs.getInt("klasse");
+                double saldo = rs.getDouble("saldo");
+
+                OVChipkaart ovChipkaart = new OVChipkaart(kaart_nummer,geldig_tot,klasse,saldo);
+
+                ovchipkaarten.add(ovChipkaart);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ovchipkaarten;
     }
 }
